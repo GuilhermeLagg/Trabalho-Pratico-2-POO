@@ -45,6 +45,7 @@ public class Estoque {
                 sc.nextLine();
                 System.out.print("Data de fabricação: ");
                 String data = sc.nextLine();
+                //para podermos inserir uma data no formato desejado, precisamos primeiro ler como String e dps transformar em LocalDate
                 LocalDate dataFormatada = LocalDate.parse(data, fmt);
                 produtos.add(new Usado(nome, preco, qtdeIni, dataFormatada));
             }
@@ -55,6 +56,10 @@ public class Estoque {
     }
 
     public static void comprarProduto(){
+        System.out.println("Qual produto deseja comprar?");
+        for (Produto p : produtos){
+            System.out.println(p.getNome());
+        }
 
     }
 

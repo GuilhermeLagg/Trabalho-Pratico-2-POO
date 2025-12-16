@@ -21,6 +21,7 @@ public class Gerenciador {
                     Estoque.cadastrarProduto();
                     break;
                 case 3:
+                    Estoque.comprarProduto();
             }
         } while (menu() != 5);
 
@@ -37,8 +38,7 @@ public class Gerenciador {
                 5 - Pesquisar produto
                 6 - Sair
                 """);
-        int resp = sc.nextInt();
-        return resp;
+        return sc.nextInt();
     }
 
 

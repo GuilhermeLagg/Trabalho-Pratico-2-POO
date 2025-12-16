@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Usado extends Produto{
+    //vamos usar a bib local date pra poder manipular as datas dos produtos usados
     private LocalDate dataFabricacao;
 
     public Usado(){
@@ -26,6 +27,7 @@ public class Usado extends Produto{
 
     @Override
     public String toString(){
+        //pra poder imprimir a data no formato convencional brasileiro vamos ter que usra um formatador
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         return "Nome: "
