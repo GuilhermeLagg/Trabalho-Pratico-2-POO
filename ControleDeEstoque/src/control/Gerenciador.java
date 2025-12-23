@@ -7,28 +7,32 @@ public class Gerenciador {
     private static Scanner sc = new Scanner(System.in);
 
     public void iniciarPrograma() {
-        menu();
+        int opcao;
         do {
-            switch (menu()) {
+            opcao = menu();
+            switch (opcao) {
                 case 1:
-                    if (Estoque.estoqueVazio()) {
-                        System.out.println("O estoque está vazio! Adicione itens para poder visualizar.");
-                    } else {
-                        Estoque.imprimeProduto();
-                    }
+                    Estoque.imprimeProduto();
                     break;
                 case 2:
                     Estoque.cadastrarProduto();
                     break;
                 case 3:
                     Estoque.comprarProduto();
+                    break;
+                case 4:
+                    Estoque.venderProduto();
+                    break;
+                case 5:
+                    Estoque.pesquisarProduto();
+                    break;
             }
-        } while (menu() != 5);
+        } while (opcao != 6);
 
     }
 
     public int menu() {
-        System.out.println("Bem vindo ao estoque da loja XPTO!");
+        System.out.println("\nBem vindo ao estoque da loja XPTO!\n");
         System.out.println("Informe a operação que deseja realizar:");
         System.out.println("""
                 1 - Visualizar Estoque

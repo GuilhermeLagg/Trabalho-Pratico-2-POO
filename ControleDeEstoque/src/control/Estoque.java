@@ -52,6 +52,7 @@ public class Estoque {
             if (resp == 'c'){
                 produtos.add(new Comum(nome, preco, qtdeIni));
             }
+            sc.nextLine();
         }
     }
 
@@ -60,23 +61,71 @@ public class Estoque {
         for (Produto p : produtos){
             System.out.println(p.getNome());
         }
+        String x = sc.nextLine();
+
+        for(Produto p : produtos){
+            if(p.getNome().equals(x)){
+                System.out.println("Quantas unidades deseja comprar?");
+                int qtde = sc.nextInt();
+                sc.nextLine();
+                p.setQuantidade(p.getQuantidade() + qtde);
+            }else{
+                System.out.println("Produto não encontrado.");
+            }
+        }
 
     }
 
-    public static void venderProduto(String x){
+    public static void venderProduto(){
+        System.out.println("Qual produto deseja vender?");
+        for (Produto p : produtos){
+            System.out.println(p.getNome());
+        }
+        String x = sc.nextLine();
+
         for (Produto p : produtos){
             if (p.getNome().equals(x)){
-                produtos.remove(p);
+                System.out.println("Quantas unidades você deseja comprar?");
+                int qtde = sc.nextInt();
+                sc.nextLine();
+
+                if(p.getQuantidade() <  qtde){
+                    System.out.println("Quantidade indisponível em estoque.");
+                }else if(p.getQuantidade() > qtde){
+                    System.out.println("Produto vendido.");
+                    p.setQuantidade(p.getQuantidade() - qtde);
+                }else{
+                    System.out.println("Produto removido do estoque.");
+                    produtos.remove(p);
+                    break;
+                }
             }
         }
     }
 
     public static void imprimeProduto(){
         System.out.println();
-        System.out.println("PRODUTOS EM ESTOQUE");
-        for (Produto p : produtos){
-            System.out.println(p);
-            System.out.println();
+        if (Estoque.estoqueVazio()) {
+            System.out.println("O estoque está vazio! Adicione itens para poder visualizar.");
+        } else {
+            System.out.println("PRODUTOS EM ESTOQUE");
+            for (Produto p : produtos){
+                System.out.println(p);
+                System.out.println();
+            }
+        }
+    }
+
+    public static void pesquisarProduto(){
+        System.out.println("Qual produto deseja pesquisar?");
+        String prod = sc.nextLine();
+
+        for (Produto  p : produtos){
+            if (p.getNome().equals(prod)){
+
+            } else{
+                System.out.println("Nenhum produto encontrado.");
+            }
         }
     }
 
