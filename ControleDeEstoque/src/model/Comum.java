@@ -1,4 +1,4 @@
-package entities;
+package model;
 
 public class Comum extends Produto{
     public Comum (){
@@ -16,7 +16,9 @@ public class Comum extends Produto{
 
     @Override
     public String toString(){
-        return  "Nome: "
+        return  "Id: "
+                + id
+                + "\nNome: "
                 + nome
                 + "\nPreço: R$"
                 + String.format("%.2f%n", preco)

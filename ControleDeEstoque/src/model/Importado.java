@@ -1,4 +1,4 @@
-package entities;
+package model;
 
 public class Importado extends Produto{
     private double taxaImportacao;
@@ -23,7 +23,9 @@ public class Importado extends Produto{
 
     @Override
     public String toString(){
-        return "Nome: "
+        return "Id: "
+                + id
+                + "\nNome: "
                 + nome
                 + "\nPreço: R$"
                 + String.format("%.2f%n", preco)

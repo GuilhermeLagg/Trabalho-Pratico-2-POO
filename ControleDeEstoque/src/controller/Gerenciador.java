@@ -1,24 +1,26 @@
-package control;
+package controller;
+
+import model.Usuario;
 
 import java.util.Scanner;
 
 public class Gerenciador {
-
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
 
     public void iniciarPrograma() {
+        Usuario.cadastrarUsuario();
         int opcao;
         do {
             opcao = menu();
             switch (opcao) {
                 case 1:
-                    Estoque.imprimeProduto();
+                    Estoque.imprimeCarrinho();
                     break;
                 case 2:
-                    Estoque.cadastrarProduto();
+                    Estoque.visualizarEstoque();
                     break;
                 case 3:
-                    Estoque.comprarProduto();
+                    Estoque.adicionarAoCarrinho();
                     break;
                 case 4:
                     Estoque.venderProduto();
@@ -32,13 +34,13 @@ public class Gerenciador {
     }
 
     public int menu() {
-        System.out.println("\nBem vindo ao estoque da loja XPTO!\n");
+        System.out.println("\nBem vindo ao estoque da loja XPTO \n");
         System.out.println("Informe a operação que deseja realizar:");
         System.out.println("""
-                1 - Visualizar Estoque
-                2 - Cadastrar produto
-                3 - Comprar produto
-                4 - Vender produto
+                1 - Visualizar Carrinho
+                2 - Visualizar Estoque
+                3 - Adicionar produto ao Carrinho
+                4 - Retirar produto do Carrinho
                 5 - Pesquisar produto
                 6 - Sair
                 """);

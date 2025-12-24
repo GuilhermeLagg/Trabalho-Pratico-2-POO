@@ -1,6 +1,6 @@
-package domain;
+package view;
 
-import control.Gerenciador;
+import controller.Gerenciador;
 
 public class Main {
     public static void main(String[] args) {
