@@ -23,7 +23,7 @@ public class Gerenciador {
                     Estoque.adicionarAoCarrinho();
                     break;
                 case 4:
-                    Estoque.venderProduto();
+                    Estoque.removerDoCarrinho();
                     break;
                 case 5:
                     Estoque.pesquisarProduto();

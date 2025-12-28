@@ -5,6 +5,7 @@ import model.Importado;
 import model.ItemCarrinho;
 import model.Produto;
 
+import javax.print.attribute.standard.OrientationRequested;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class Estoque {
 
         System.out.print("Qual a quantidade? ");
         int qtde = sc.nextInt();
+        sc.nextLine();
 
         //verificando se o produto já está no carrinho, se estiver, só adiciona a quantidade
         for(ItemCarrinho item : carrinho){
@@ -62,8 +64,32 @@ public class Estoque {
                 return;
             }
         }
-        //ainda tem que colocar logica de caso não tenha o produto no carrinho, criar esse produto lá
+        //lógica de caso não tenha o produto no carrinho
+        for(Produto p : produtos){
+            if(p.getId() == id){
+                carrinho.add(new ItemCarrinho(p, qtde));
+                break;
+            }else{
+                System.out.println("Produto não encontrado");
+            }
+        }
 
+    }
+
+    public static void removerDoCarrinho(){
+        System.out.println("Qual produto deseja remover? Informe o id:");
+        for (ItemCarrinho item : carrinho){
+            System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome());
+        }
+        int id = sc.nextInt();
+        sc.nextLine();
+        for(ItemCarrinho item : carrinho){
+            if(item.getProduto().getId() == id){
+                carrinho.remove(item);
+                System.out.println("Produto removido com sucesso");
+                break;
+            }
+        }
     }
 
     public static void venderProduto(){
@@ -100,7 +126,7 @@ public class Estoque {
         } else {
             System.out.println("PRODUTOS NO CARRINHO");
             for (ItemCarrinho item : carrinho){
-                System.out.println(item);
+                System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: "+item.getProduto().getQuantidade() + " | ID: " + item.getProduto().getId());
                 System.out.println();
             }
         }
