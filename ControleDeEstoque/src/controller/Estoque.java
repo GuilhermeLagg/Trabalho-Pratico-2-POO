@@ -1,8 +1,6 @@
 package controller;
 
 import model.*;
-import org.w3c.dom.ls.LSOutput;
-
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +43,12 @@ public class Estoque {
     }
 
     //metodo para adicionar os produtos no carrinho através do id
-    public static void adicionarAoCarrinho(){
+    public static void adicionarAoCarrinho() {
         System.out.println("Qual produto deseja adicionar? Informe o id:");
         for (Produto p : produtos){
             System.out.println("ID: " +p.getId() + " | Produto: " + p.getNome());
         }
+        System.out.print("--> ");
         int id = sc.nextInt();
         sc.nextLine();
 
@@ -59,6 +58,8 @@ public class Estoque {
 
         //verificando se o produto já está no carrinho, se estiver, só adiciona a quantidade
         for(ItemCarrinho item : carrinho){
+            //precisamos verificar aqui se o estoque eh suficiente pra poder add no carrinho
+            //aqui vamos usar a excecao personalizada EstoqueInsuficienteException
             if (item.getProduto().getId() == id){
                 item.adicionarProduto(qtde);
                 totalCarrinho +=item.getProduto().getPreco()*qtde;
@@ -83,8 +84,15 @@ public class Estoque {
         for (ItemCarrinho item : carrinho){
             System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome());
         }
+        System.out.print("--> ");
         int id = sc.nextInt();
         sc.nextLine();
+
+        System.out.print("Quantas unidades? ");
+        int qtde = sc.nextInt();
+        //se usarmos so o carrinho.remove(item) nos vamos excluir o objeto inteiro do carrinho
+        //mas precisamos excluir somente a quantidade desejada pelo usuario.
+        //caso o usuario queira remover tudo do item, ai sim podemos usar carrinho.remove(item).
         for(ItemCarrinho item : carrinho){
             if(item.getProduto().getId() == id){
                 carrinho.remove(item);
@@ -99,14 +107,18 @@ public class Estoque {
     public static void imprimeCarrinho(){
         System.out.println();
         if (Estoque.carrinhoVazio()) {
+            System.out.println("========================================================================");
             System.out.println("O carrinho está vazio! Adicione itens ao carrinho para poder visualizar.");
+            System.out.println("========================================================================");
         } else {
-            System.out.println("PRODUTOS NO CARRINHO");
+            System.out.println("============= PRODUTOS NO CARRINHO =============");
             for (ItemCarrinho item : carrinho){
                 System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho() + " | ID: " + item.getProduto().getId());
                 System.out.println();
             }
             System.out.printf("Subtotal no carrinho: R$%.2f%n", totalCarrinho);
+            System.out.println("================================================");
+
         }
     }
 

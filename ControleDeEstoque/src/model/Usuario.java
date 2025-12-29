@@ -28,11 +28,12 @@ public class Usuario implements UsuarioAutenticavel{
 
     //cadastrando os usuarios somente com nome e senha
     public static void cadastrarUsuario(){
-        System.out.print("Informe o usuário: ");
+        System.out.print("Usuário: ");
         String nome = sc.nextLine();
-        System.out.print("Informe a senha: ");
+        System.out.print("Senha: ");
         int sen = sc.nextInt();
         sc.nextLine();
+        System.out.println();
 
         //vamos verificar se já existe um usuario com o nome que voce esta tentando usar
         if (usuarioJaExiste(nome)){

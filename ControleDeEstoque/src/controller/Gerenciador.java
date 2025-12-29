@@ -8,6 +8,9 @@ public class Gerenciador {
     private static final Scanner sc = new Scanner(System.in);
 
     public void iniciarPrograma() {
+        System.out.println("\n******** Bem vindo às lojas Havan! ********\n");
+
+        System.out.println("Informe seu usuário e sua senha para iniciar a sua compra:");
         Usuario.cadastrarUsuario();
         int opcao;
         do {
@@ -40,7 +43,6 @@ public class Gerenciador {
     }
 
     public int menu() {
-        System.out.println("\nBem vindo ao estoque da loja XPTO \n");
         System.out.println("Informe a operação que deseja realizar:");
         System.out.println("""
                 1 - Visualizar Carrinho
