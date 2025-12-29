@@ -45,9 +45,11 @@ public class Estoque {
     //metodo para adicionar os produtos no carrinho através do id
     public static void adicionarAoCarrinho() {
         System.out.println("Qual produto deseja adicionar? Informe o id:");
+        System.out.println("========================================================================");
         for (Produto p : produtos){
             System.out.println("ID: " +p.getId() + " | Produto: " + p.getNome());
         }
+        System.out.println("========================================================================");
         System.out.print("--> ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -82,7 +84,7 @@ public class Estoque {
     public static void removerDoCarrinho(){
         System.out.println("Qual produto deseja remover do carrinho? Informe o id:");
         for (ItemCarrinho item : carrinho){
-            System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome());
+            System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho());
         }
         System.out.print("--> ");
         int id = sc.nextInt();
@@ -90,14 +92,21 @@ public class Estoque {
 
         System.out.print("Quantas unidades? ");
         int qtde = sc.nextInt();
-        //se usarmos so o carrinho.remove(item) nos vamos excluir o objeto inteiro do carrinho
-        //mas precisamos excluir somente a quantidade desejada pelo usuario.
-        //caso o usuario queira remover tudo do item, ai sim podemos usar carrinho.remove(item).
+
+        //Lógica para remoção dos objetos do carrinho, primeiro if retirando o produto por completo, o segundo certa quantidade e por fim não removendo por não possuir tal quantidade desejada
         for(ItemCarrinho item : carrinho){
             if(item.getProduto().getId() == id){
-                carrinho.remove(item);
-                totalCarrinho -= item.produtoValorCarrinho();
-                System.out.println("Produto removido com sucesso");
+                if(item.getQuantidadeCarrinho()==qtde){
+                    carrinho.remove(item);
+                    totalCarrinho -= item.produtoValorCarrinho();
+                    System.out.println("Produto removido com sucesso");
+                }else if(item.getQuantidadeCarrinho()>qtde){
+                    item.setQuantidadeCarrinho(item.getQuantidadeCarrinho()-qtde);
+                    totalCarrinho -= item.getProduto().getPreco()*qtde;
+                    System.out.println("Quantidade removida com sucesso");
+                }else{
+                    System.out.println("Você não possui essa quantidade no carrinho.");
+                }
                 break;
             }
         }
@@ -136,12 +145,15 @@ public class Estoque {
     }
 
     public static void finalizarCompra(){
+
         System.out.println("Finalizando Compra...\n");
         if (Estoque.carrinhoVazio()) {
             System.out.println("Seu carrinho está vazio, deseja finalizar mesmo assim? (sim/nao)");
             String resposta = sc.nextLine();
             if (resposta.equalsIgnoreCase("sim")){
+                System.out.println("==================================");
                 System.out.println("Obrigado por comprar na loja XPTO!");
+                System.out.println("==================================");
             }
         }else{
             System.out.println("Valor total do seu carrinho: R$" + totalCarrinho);
