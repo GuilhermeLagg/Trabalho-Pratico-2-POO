@@ -5,7 +5,6 @@ import model.Importado;
 import model.ItemCarrinho;
 import model.Produto;
 
-import javax.print.attribute.standard.OrientationRequested;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,16 +67,16 @@ public class Estoque {
         for(Produto p : produtos){
             if(p.getId() == id){
                 carrinho.add(new ItemCarrinho(p, qtde));
+                System.out.println(qtde + " unidades de " + p.getNome() + " adicionado ao carrinho!");
                 break;
-            }else{
-                System.out.println("Produto não encontrado");
             }
         }
+
 
     }
 
     public static void removerDoCarrinho(){
-        System.out.println("Qual produto deseja remover? Informe o id:");
+        System.out.println("Qual produto deseja remover do carrinho? Informe o id:");
         for (ItemCarrinho item : carrinho){
             System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome());
         }
@@ -92,32 +91,6 @@ public class Estoque {
         }
     }
 
-    public static void venderProduto(){
-        System.out.println("Qual produto deseja vender?");
-        for (Produto p : produtos){
-            System.out.println(p.getNome());
-        }
-        String x = sc.nextLine();
-
-        for (Produto p : produtos){
-            if (p.getNome().equals(x)){
-                System.out.println("Quantas unidades você deseja comprar?");
-                int qtde = sc.nextInt();
-                sc.nextLine();
-
-                if(p.getQuantidade() <  qtde){
-                    System.out.println("Quantidade indisponível em estoque.");
-                }else if(p.getQuantidade() > qtde){
-                    System.out.println("Produto vendido.");
-                    p.setQuantidade(p.getQuantidade() - qtde);
-                }else{
-                    System.out.println("Produto removido do estoque.");
-                    produtos.remove(p);
-                    break;
-                }
-            }
-        }
-    }
 
     public static void imprimeCarrinho(){
         System.out.println();
@@ -126,9 +99,10 @@ public class Estoque {
         } else {
             System.out.println("PRODUTOS NO CARRINHO");
             for (ItemCarrinho item : carrinho){
-                System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: "+item.getProduto().getQuantidade() + " | ID: " + item.getProduto().getId());
+                System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho() + " | ID: " + item.getProduto().getId());
                 System.out.println();
             }
+            System.out.printf("Subtotal no carrinho: R$%.2f%n", subtotalCarrinho());
         }
     }
 

@@ -28,6 +28,7 @@ public class Usuario implements UsuarioAutenticavel{
         String nome = sc.nextLine();
         System.out.print("Informe a senha: ");
         int sen = sc.nextInt();
+        sc.nextLine();
 
         //vamos verificar se já existe um usuario com o nome que voce esta tentando usar
         if (usuarioJaExiste(nome)){

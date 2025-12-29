@@ -22,7 +22,7 @@ public class Usado extends Produto{
 
     @Override
     public double precoTotal(){
-        return preco * quantidade;
+        return preco * quantidadeProduto;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Usado extends Produto{
                 + "\nPreço: R$"
                 + String.format("%.2f%n", preco)
                 + "Quantidade: "
-                + quantidade
+                + quantidadeProduto
                 + "\nData de Fabricação: "
                 + dataFabricacao.format(fmt)
                 + "\nPreço total: R$"
