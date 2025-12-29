@@ -102,6 +102,7 @@ public class Estoque {
                 System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho() + " | ID: " + item.getProduto().getId());
                 System.out.println();
             }
+            //ta dando erro aqui
             System.out.printf("Subtotal no carrinho: R$%.2f%n", subtotalCarrinho());
         }
     }
