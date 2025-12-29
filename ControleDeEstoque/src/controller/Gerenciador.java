@@ -28,8 +28,14 @@ public class Gerenciador {
                 case 5:
                     Estoque.pesquisarProduto();
                     break;
+                case 6:
+                    //Não coloquei ainda pra esse metodo finalizar o programa ou zerar o carrinho
+                    Estoque.finalizarCompra();
+                    break;
+                case 7:
+                    System.out.println("Saindo do programa...");
             }
-        } while (opcao != 6);
+        } while (opcao != 7);
 
     }
 
@@ -42,7 +48,8 @@ public class Gerenciador {
                 3 - Adicionar produto ao Carrinho
                 4 - Retirar produto do Carrinho
                 5 - Pesquisar produto
-                6 - Sair
+                6 - Finalizar Compra
+                7 - Sair
                 """);
         return sc.nextInt();
     }

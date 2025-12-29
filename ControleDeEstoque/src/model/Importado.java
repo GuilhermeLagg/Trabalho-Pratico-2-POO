@@ -17,6 +17,11 @@ public class Importado extends Produto{
     }
 
     @Override
+    public double getPreco() {
+        return super.getPreco()+taxaImportacao;
+    }
+
+    @Override
     public double precoTotal(){
         return (preco * quantidadeProduto) + taxaImportacao;
     }

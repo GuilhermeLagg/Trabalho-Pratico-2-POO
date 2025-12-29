@@ -25,7 +25,7 @@ public class ItemCarrinho {
 
     //faz o subtotal de todos os produtos do carrinho
     //precisamos consertar a logica, porque ele nao esta acessando o preco do produto (polimorfismo, cada tipo de produto tem uma regra de calculo diferente)
-    public double subtotalCarrinho(){
+    public double produtoValorCarrinho(){
         return quantidadeCarrinho * produto.getPreco();
     }
 }

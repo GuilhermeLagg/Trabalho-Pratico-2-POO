@@ -1,9 +1,7 @@
 package controller;
 
-import model.Comum;
-import model.Importado;
-import model.ItemCarrinho;
-import model.Produto;
+import model.*;
+import org.w3c.dom.ls.LSOutput;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,6 +16,9 @@ public class Estoque {
     private static List<ItemCarrinho> carrinho = new ArrayList<>();
     private static Scanner sc = new Scanner(System.in);
     private static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    //Variável responsável por armazenar o valor total dos produtos no carrinho (N sei se seria a melhor forma de fazer isso)
+    private static double totalCarrinho;
 
     public static void visualizarEstoque(){
 
@@ -60,6 +61,7 @@ public class Estoque {
         for(ItemCarrinho item : carrinho){
             if (item.getProduto().getId() == id){
                 item.adicionarProduto(qtde);
+                totalCarrinho +=item.getProduto().getPreco()*qtde;
                 return;
             }
         }
@@ -68,6 +70,7 @@ public class Estoque {
             if(p.getId() == id){
                 carrinho.add(new ItemCarrinho(p, qtde));
                 System.out.println(qtde + " unidades de " + p.getNome() + " adicionado ao carrinho!");
+                totalCarrinho +=p.getPreco()*qtde;
                 break;
             }
         }
@@ -85,6 +88,7 @@ public class Estoque {
         for(ItemCarrinho item : carrinho){
             if(item.getProduto().getId() == id){
                 carrinho.remove(item);
+                totalCarrinho -= item.produtoValorCarrinho();
                 System.out.println("Produto removido com sucesso");
                 break;
             }
@@ -102,8 +106,7 @@ public class Estoque {
                 System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho() + " | ID: " + item.getProduto().getId());
                 System.out.println();
             }
-            //ta dando erro aqui
-            System.out.printf("Subtotal no carrinho: R$%.2f%n", subtotalCarrinho());
+            System.out.printf("Subtotal no carrinho: R$%.2f%n", totalCarrinho);
         }
     }
 
@@ -117,6 +120,20 @@ public class Estoque {
             } else{
                 System.out.println("Nenhum produto encontrado.");
             }
+        }
+    }
+
+    public static void finalizarCompra(){
+        System.out.println("Finalizando Compra...\n");
+        if (Estoque.carrinhoVazio()) {
+            System.out.println("Seu carrinho está vazio, deseja finalizar mesmo assim? (sim/nao)");
+            String resposta = sc.nextLine();
+            if (resposta.equalsIgnoreCase("sim")){
+                System.out.println("Obrigado por comprar na loja XPTO!");
+            }
+        }else{
+            System.out.println("Valor total do seu carrinho: R$" + totalCarrinho);
+            Usuario.confirmarUsuario();
         }
     }
 
