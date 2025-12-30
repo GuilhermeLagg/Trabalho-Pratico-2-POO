@@ -132,15 +132,23 @@ public class Estoque {
     }
 
     public static void pesquisarProduto(){
-        System.out.println("Qual produto deseja pesquisar?");
-        String prod = sc.nextLine();
-
+        System.out.println("Informe o ID do produto desejado:");
+        int id = sc.nextInt();
+        boolean encontrado = false;
         for (Produto  p : produtos){
-            if (p.getNome().equals(prod)){
-
-            } else{
-                System.out.println("Nenhum produto encontrado.");
+            if (p.getId() == id){
+                System.out.println("==================================================");
+                System.out.println("       Informações do produto desejado:");
+                System.out.println("Produto: " + p.getNome() + " | Quantidade: " + p.getQuantidadeProduto() + " | ID: " + p.getId());
+                System.out.println("==================================================");
+                encontrado = true;
+                break;
             }
+        }
+        if (!encontrado ){
+            System.out.println("=========================================");
+            System.out.println("Produto com ID " + id + " não localizado.");
+            System.out.println("=========================================");
         }
     }
 
