@@ -96,4 +96,39 @@ public class GerenciadorArquivos {
         }
         return produtos;
     }
+
+    //agora precisamos de um metodo que vai gerar o relatorio de compra ao final de cada compra
+    public static void gerarRelatorioCompra(List<ItemCarrinho> carrinho, double total){
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            //vamos escrever no arquivo relatorio_compra.txt
+            fw = new FileWriter("relatorio_compra.txt");
+            bw = new BufferedWriter(fw);
+
+            bw.write("********** RECIBO COMPRA **********");
+            bw.newLine();
+            //vamos organizando por nome, qtde e subtotal
+            for (ItemCarrinho item : carrinho){
+                String linha = "Produto: " + item.getProduto().getNome() + " | Qtde: " + item.getQuantidadeCarrinho() + " | Subtotal: R$" + item.produtoValorCarrinho();
+                bw.write(linha);
+                bw.newLine();
+            }
+            bw.write("-------------------------------------------");
+            bw.newLine();
+        } catch (IOException e ){
+            System.out.println("Erro ao gerar relatório: " + e.getMessage());
+        } finally {
+            try {
+                if (bw != null){
+                    bw.close();
+                }
+                if (fw != null){
+                    fw.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao fechar o relatório.");
+            }
+        }
+    }
 }

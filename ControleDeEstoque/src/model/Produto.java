@@ -31,6 +31,10 @@ public abstract class Produto {
         return quantidadeProduto;
     }
 
+    public void setQuantidadeProduto(int quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
+    }
+
     public abstract double precoTotal();
 
 }

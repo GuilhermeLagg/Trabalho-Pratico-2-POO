@@ -20,17 +20,10 @@ public class Estoque {
 
     public static void visualizarEstoque(){
 
-        //aqui estão listados os produtos disponiveis no estoque (ate o momento, só hardcode mesmo, a n ser que tenha outra forma melhor de colocar eles)
-        produtos.add(new Comum("Notebook Acer", 2200.00, 10));
-        produtos.add(new Importado("Iphone 14 pro max",8000.00, 20, 500.00));
-        produtos.add(new Comum("Placa de Vídeo RTX 550", 1200.00, 1));
-        produtos.add(new Importado("Apple Watch", 1673.00, 15, 1000.00));
-        produtos.add(new Comum("Samsumg Galaxy Buds", 289.00, 5));
-        produtos.add(new Importado("Apple Ipad 11 A16", 2949.00, 30, 430.00));
-        produtos.add(new Comum("Projetor Smart Full HD 4k", 194.35, 10));
-        produtos.add(new Importado("Smart Ring HALO", 447.90, 5, 500.00));
-        produtos.add(new Comum("Amazon Echo Dot", 459.00, 20));
-        produtos.add(new Importado("Carregador Magnético Sem Fio", 1423.99, 10, 1000.00));
+        if (produtos.isEmpty()){
+            System.out.println("Estoque vazio ou arquivo não encontrado");
+            return;
+        }
 
         //mostrando os produtos em estoque
         System.out.println("Produtos em Estoque");
@@ -38,7 +31,6 @@ public class Estoque {
             System.out.println("**************************");
             System.out.println(p);
             System.out.println("**************************");
-            System.out.println();
         }
     }
 
@@ -155,18 +147,33 @@ public class Estoque {
     public static void finalizarCompra(){
 
         System.out.println("Finalizando Compra...\n");
-        if (Estoque.carrinhoVazio()) {
-            System.out.println("Seu carrinho está vazio, deseja finalizar mesmo assim? (sim/nao)");
-            String resposta = sc.nextLine();
-            if (resposta.equalsIgnoreCase("sim")){
-                System.out.println("==================================");
-                System.out.println("Obrigado por comprar na loja XPTO!");
-                System.out.println("==================================");
-            }
-        }else{
-            System.out.println("Valor total do seu carrinho: R$" + totalCarrinho);
-            Usuario.confirmarUsuario();
+        if (carrinhoVazio()) {
+            System.out.println("Seu carrinho está vazio!");
+            return;
         }
+
+        System.out.println("Valor total do seu carrinho: " + totalCarrinho);
+        Usuario.confirmarUsuario();
+
+        //agora nós temos que TIRAR do estoque o que o usuario comprou, pra que ele possa ficar atualizado
+        for (ItemCarrinho item : carrinho){
+            Produto p = item.getProduto();
+            //vamos SUBTRAIR o que temos no estoque pelo que compramos e que está no nosso carrinho
+            //ai usamos um setter pra poder atualizar a qtde no estoque
+            p.setQuantidadeProduto(p.getQuantidadeProduto() - item.getQuantidadeCarrinho());
+        }
+
+       //a atualização foi feita só no estoque "fisico", mas precisamos fazer no "virtual". Ou seja, atualizar no arquivo tbm
+       GerenciadorArquivos.salvarEstoque(produtos); //aq ele vai REESCREVER o arquivo, mas agora com os produtos atualizados!
+
+        //agora vamos gerar nosso recibo ao final da compra
+        GerenciadorArquivos.gerarRelatorioCompra(carrinho, totalCarrinho);
+
+        //vamos limpar o carrinho pra prox compra
+        carrinho.clear(); //esse clear() limpa a lista - "reseta"
+        totalCarrinho = 0; //precisamos tbm resetar o valor que estava no carrinho
+
+        System.out.println("\nCompra finalizada!");
     }
 
     public static boolean carrinhoVazio(){
