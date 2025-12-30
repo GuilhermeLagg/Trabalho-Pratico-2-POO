@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 public class Estoque {
     //Vamos criar uma lista de produtos em estoque (produtos esses que não vao mudar. São os produtos disponíveis pra compra).
-    private static List<Produto> produtos = new ArrayList<>();
+    //essa lista tem que ser iniciada carregando o nosso estoque está no arquivo estoque.txt;
+    private static List<Produto> produtos = GerenciadorArquivos.carregarEstoque();
 
     //Essa outra lista é o nosso carrinho. Vamos add os produtos ao carrinho pra que possamos comprá-los.
     private static List<ItemCarrinho> carrinho = new ArrayList<>();
@@ -49,27 +50,55 @@ public class Estoque {
         System.out.print("Qual a quantidade? ");
         int qtde = sc.nextInt();
         sc.nextLine();
+        //agora precisamos tratar a exceção personalizada: estoque insuficiente
+        try{
+            Produto produtoEstoque = null;
+            for (Produto p: produtos){
+                if (p.getId() == id){
+                    produtoEstoque = p;
+                    break;
+                    //aq estamos adicionando o produto q o usuario digitou na variavel de Produto produtoEstoque.
+                }
+            }
 
-        //verificando se o produto já está no carrinho, se estiver, só adiciona a quantidade
-        for(ItemCarrinho item : carrinho){
-            //precisamos verificar aqui se o estoque eh suficiente pra poder add no carrinho
-            //aqui vamos usar a excecao personalizada EstoqueInsuficienteException
-            if (item.getProduto().getId() == id){
-                item.adicionarProduto(qtde);
-                totalCarrinho +=item.getProduto().getPreco()*qtde;
+            if (produtoEstoque == null){
+                //se n tivermos adicionado nada ent significa que nao encontramos esse produto no estoque
+                System.out.println("Produto não encontrado!");
                 return;
             }
-        }
-        //lógica de caso não tenha o produto no carrinho
-        for(Produto p : produtos){
-            if(p.getId() == id){
-                carrinho.add(new ItemCarrinho(p, qtde));
-                System.out.println(qtde + " unidades de " + p.getNome() + " adicionado ao carrinho!");
-                totalCarrinho +=p.getPreco()*qtde;
-                break;
-            }
-        }
 
+            //agora a gnt precisa ver quanto desse produto já tem no nosso carrinho
+            int qtdeNoCarrinho = 0;
+            ItemCarrinho itemExistente = null;
+            for (ItemCarrinho item : carrinho){
+                if (item.getProduto().getId() == id){
+                    //vamos guardar a qtde q temos no carrinho de determinado item
+                    qtdeNoCarrinho = item.getQuantidadeCarrinho();
+                    itemExistente = item;
+                    break;
+                }
+            }
+
+            //a soma (novo + atual) ultrapassa o estoque?
+            if ((qtdeNoCarrinho + qtde) > produtoEstoque.getQuantidadeProduto()) {
+                //se essa qtde ultrapassar ai vamos lançar nossa excecao personalizada
+                throw new EstoqueInsuficienteException("Estoque insuficiente! Você já tem " + qtdeNoCarrinho + " no carrinho e o estoque total é " + produtoEstoque.getQuantidadeProduto());
+            }
+
+            //se foi validado e está ok, ent fazemos:
+            if (itemExistente != null){
+                itemExistente.adicionarProduto(qtde);
+            } else {
+                carrinho.add(new ItemCarrinho(produtoEstoque, qtde));
+            }
+
+            //e agora, por fim, vamos atualizar o preco total no carrinho
+            totalCarrinho += produtoEstoque.getPreco() * qtde;
+            System.out.println("\n" + qtde + " unidades de " + produtoEstoque.getNome() + " adicionados ao carrinho!");
+
+        } catch (EstoqueInsuficienteException e){
+            System.out.println("Erro no pedido! " + e.getMessage());
+        }
 
     }
 

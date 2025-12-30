@@ -1,0 +1,6 @@
+********** RECIBO COMPRA **********
+Produto: Apple Watch | Qtde: 2 | Subtotal: R$7274.0
+Produto: Placa de Vídeo RTX 550 | Qtde: 1 | Subtotal: R$1200.0
+Produto: Amazon Echo Dot | Qtde: 1 | Subtotal: R$459.0
+Produto: Carregador Magnético Sem Fio | Qtde: 1 | Subtotal: R$3423.99
+-------------------------------------------
