@@ -2,13 +2,11 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Usuario implements UsuarioAutenticavel{
     //criando a classe usuario pra poder cadastrar na hora do inicio do programa
     private String nome;
     private int senha;
-    private static Scanner sc = new Scanner(System.in);
 
     //criando uma lista de usuarios
     private static List<Usuario> usuarios = new ArrayList<>();
@@ -22,20 +20,27 @@ public class Usuario implements UsuarioAutenticavel{
         return nome;
     }
 
+    public int getSenha(){
+        return senha;
+    }
     //cadastrando os usuarios somente com nome e senha
-    public static void cadastrarUsuario(){
-        System.out.print("Informe o usuário: ");
-        String nome = sc.nextLine();
-        System.out.print("Informe a senha: ");
-        int sen = sc.nextInt();
 
+    public void setNome(String n){
+        this.nome = n;
+    }
+
+    public void setSenha(int s){
+        this.senha = s;
+    }
+    public static boolean cadastrarUsuario(String nome, int senha){
         //vamos verificar se já existe um usuario com o nome que voce esta tentando usar
         if (usuarioJaExiste(nome)){
             System.out.println("Usuário já existe!");
-            return;
+            return false;
         }
         //se nao existir, adiciona a lista de usuarios
-        usuarios.add(new Usuario(nome, sen));
+        usuarios.add(new Usuario(nome, senha));
+        return true;
     }
 
     //aqui é o metodo para fazer a validação de usuarios
