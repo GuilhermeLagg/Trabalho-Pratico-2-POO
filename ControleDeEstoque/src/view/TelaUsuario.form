@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="view.TelaUsuario">
+  <grid id="27dc6" binding="painelCadastro" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="40" y="20" width="515" height="334"/>
+    </constraints>
+    <properties>
+      <background color="-5132357"/>
+      <font size="72" style="1"/>
+      <preferredSize width="60" height="44"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="3ef55" class="javax.swing.JLabel" binding="informeSenha">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <font size="24" style="0"/>
+          <foreground color="-16777216"/>
+          <horizontalTextPosition value="10"/>
+          <text value="Informe a senha:"/>
+        </properties>
+      </component>
+      <component id="44be4" class="javax.swing.JTextField" binding="nome">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0" ipadx="140" ipady="40"/>
+        </constraints>
+        <properties>
+          <background color="-1707777"/>
+        </properties>
+      </component>
+      <component id="a472f" class="javax.swing.JButton" binding="cadastrarButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="3" height="3"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <preferredSize width="124" height="64"/>
+          <text value="Cadastrar"/>
+        </properties>
+      </component>
+      <component id="cb23b" class="javax.swing.JPasswordField" binding="senha">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="9" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0" ipadx="140" ipady="40"/>
+        </constraints>
+        <properties>
+          <background color="-1707777"/>
+        </properties>
+      </component>
+      <component id="c5300" class="javax.swing.JLabel" binding="tituloCadastro">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="1" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <font name="Segoe UI" size="36" style="1"/>
+          <foreground color="-16777216"/>
+          <text value="Cadastro"/>
+        </properties>
+      </component>
+      <component id="963f8" class="javax.swing.JLabel" binding="informeNome">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <font size="24" style="0"/>
+          <foreground color="-16777216"/>
+          <text value="Informe o nome de usuário: "/>
+          <verticalAlignment value="0"/>
+          <verticalTextPosition value="0"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
