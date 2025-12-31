@@ -11,7 +11,7 @@ public class Comum extends Produto{
 
     @Override
     public double precoTotal(){
-        return preco * quantidade;
+        return preco * quantidadeProduto;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Comum extends Produto{
                 + "\nPreço: R$"
                 + String.format("%.2f%n", preco)
                 + "Quantidade: "
-                + quantidade
+                + quantidadeProduto
                 + "\nPreço total: R$"
                 + String.format("%.2f", precoTotal());
     }

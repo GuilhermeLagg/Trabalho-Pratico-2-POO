@@ -17,8 +17,13 @@ public class Importado extends Produto{
     }
 
     @Override
+    public double getPreco() {
+        return super.getPreco()+taxaImportacao;
+    }
+
+    @Override
     public double precoTotal(){
-        return (preco * quantidade) + taxaImportacao;
+        return (preco * quantidadeProduto) + taxaImportacao;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class Importado extends Produto{
                 + "\nPreço: R$"
                 + String.format("%.2f%n", preco)
                 + "Quantidade: "
-                + quantidade
+                + quantidadeProduto
                 + "\nTaxa de Importação: R$"
                 + String.format("%.2f", taxaImportacao)
                 + "\nPreço total: R$"

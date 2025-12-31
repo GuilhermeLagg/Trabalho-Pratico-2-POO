@@ -5,7 +5,7 @@ public abstract class Produto {
     protected int id;
     protected String nome;
     protected double preco;
-    protected int quantidade;
+    protected int quantidadeProduto;
 
     public Produto(){};
 
@@ -14,7 +14,7 @@ public abstract class Produto {
         this.id = contador;
         this.nome = nome;
         this.preco = preco;
-        this.quantidade = quantidade;
+        this.quantidadeProduto = quantidade;
     }
 
     public int getId(){ return id;}
@@ -27,12 +27,12 @@ public abstract class Produto {
         return preco;
     }
 
-    public int getQuantidade(){
-        return quantidade;
+    public int getQuantidadeProduto(){
+        return quantidadeProduto;
     }
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
+    public void setQuantidadeProduto(int quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
     }
 
     public abstract double precoTotal();
