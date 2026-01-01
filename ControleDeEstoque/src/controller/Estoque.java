@@ -19,30 +19,31 @@ public class Estoque {
     //Variável responsável por armazenar o valor total dos produtos no carrinho (N sei se seria a melhor forma de fazer isso)
     private static double totalCarrinho;
 
-    public static void visualizarEstoque(){
-
+    public static String visualizarEstoque(){
+        StringBuilder sb = new StringBuilder();
         if (produtos.isEmpty()){
-            System.out.println("Estoque vazio ou arquivo não encontrado");
-            return;
-        }
+           sb.append("Estoque vazio ou arquivo não encontrado");
 
-        //mostrando os produtos em estoque
-        System.out.println("Produtos em Estoque");
-        for (Produto p : produtos) {
-            System.out.println("**************************");
-            System.out.println(p);
-            System.out.println("**************************");
         }
+        else {
+            //mostrando os produtos em estoque
+            sb.append("Produtos em Estoque");
+            for (Produto p : produtos) {
+                sb.append("**************************");
+                sb.append(p);
+                sb.append("**************************");
+            }
+        }
+        return sb.toString();
     }
 
     //metodo para adicionar os produtos no carrinho através do id
     public static void adicionarAoCarrinho() {
         System.out.println("Qual produto deseja adicionar? Informe o id:");
-        System.out.println("========================================================================");
         for (Produto p : produtos){
             System.out.println("ID: " +p.getId() + " | Produto: " + p.getNome());
         }
-        System.out.println("========================================================================");
+
         System.out.print("--> ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -134,23 +135,30 @@ public class Estoque {
     }
 
 
-    public static void imprimeCarrinho(){
-        System.out.println();
+    public static String imprimeCarrinho() {
+        StringBuilder sb = new StringBuilder();
+        // formata
         if (Estoque.carrinhoVazio()) {
-            System.out.println("========================================================================");
-            System.out.println("O carrinho está vazio! Adicione itens ao carrinho para poder visualizar.");
-            System.out.println("========================================================================");
+            sb.append("O carrinho está vazio! Adicione itens ao carrinho para poder visualizar.\n");
+
         } else {
-            System.out.println("============= PRODUTOS NO CARRINHO =============");
-            for (ItemCarrinho item : carrinho){
-                System.out.println("Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho() + " | ID: " + item.getProduto().getId());
-                System.out.println();
+            sb.append("PRODUTOS NO CARRINHO \n");
+            for (ItemCarrinho item : carrinho) {
+                sb.append("Produto: ")
+                        .append(item.getProduto().getNome())
+                        .append(" | Quantidade: ")
+                        .append(item.getQuantidadeCarrinho())
+                        .append(" | ID: ")
+                        .append(item.getProduto().getId())
+                        .append("\n\n");
             }
-            System.out.printf("Subtotal no carrinho: R$%.2f%n", totalCarrinho);
-            System.out.println("================================================");
+            sb.append(String.format("Subtotal no carrinho: R$%.2f%n", totalCarrinho));
 
         }
+
+        return sb.toString(); // retorna a String completa
     }
+
 
     public static void pesquisarProduto(){
         System.out.println("Informe o ID do produto desejado:");
@@ -182,7 +190,7 @@ public class Estoque {
         }
 
         System.out.println("Valor total do seu carrinho: " + totalCarrinho);
-        Usuario.confirmarUsuario();
+
 
         //agora nós temos que TIRAR do estoque o que o usuario comprou, pra que ele possa ficar atualizado
         for (ItemCarrinho item : carrinho){
@@ -210,5 +218,9 @@ public class Estoque {
             return true;
         }
         return false;
+    }
+
+    public boolean realizarCadastro(String nome, int senha) {
+        return Usuario.cadastrarUsuario(nome, senha);
     }
 }

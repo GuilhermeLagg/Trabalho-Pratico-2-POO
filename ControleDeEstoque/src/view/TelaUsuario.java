@@ -1,5 +1,5 @@
 package view;
-import controller.Gerenciador;
+import controller.Estoque;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +12,9 @@ public class TelaUsuario extends javax.swing.JFrame {
     private javax.swing.JButton cadastrarButton;
     private javax.swing.JLabel informeSenha;
     private javax.swing.JPasswordField senha;
-    private Gerenciador gerenciador;
-    public TelaUsuario(Gerenciador gerenciador) {
-        this.gerenciador = gerenciador;
+    private Estoque estoque ;
+    public TelaUsuario(Estoque estoque) {
+        this.estoque = estoque;
         setContentPane(painelCadastro); // coloca o painel do form dentro do JFrame
         setTitle("Cadastro ");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,10 +27,13 @@ public class TelaUsuario extends javax.swing.JFrame {
 
             try {
                 int senhaInt = Integer.parseInt(senhaUsuario);
-                boolean sucesso = gerenciador.realizarCadastro(nomeUsuario, senhaInt);
+                boolean sucesso = estoque.realizarCadastro(nomeUsuario, senhaInt);
 
                 if (sucesso) {
                     JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
+                    TelaMenu telaMenu = new TelaMenu(estoque);
+                    telaMenu.setVisible(true);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Usuário já existe!");
                 }
@@ -41,10 +44,7 @@ public class TelaUsuario extends javax.swing.JFrame {
     }
 
     public static void main(String[] args) {
-        Gerenciador ger = new Gerenciador();
-        SwingUtilities.invokeLater(() -> new TelaUsuario(ger).setVisible(true));
+       Estoque est = new Estoque();
+        SwingUtilities.invokeLater(() -> new TelaUsuario(est).setVisible(true));
     }
-    }
-
-
-
+}

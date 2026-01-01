@@ -16,7 +16,7 @@ public class Usuario implements UsuarioAutenticavel{
         this.senha = senha;
     }
 
-    public static String getNome(){
+    public String getNome(){
         return nome;
     }
 
@@ -43,20 +43,6 @@ public class Usuario implements UsuarioAutenticavel{
         return true;
     }
 
-    public static void confirmarUsuario(){
-        System.out.print("Confirme seu nome de usuário: ");
-        String confirmNome = sc.nextLine();
-        System.out.print("Confirme sua senha: ");
-        int confirmSenha = sc.nextInt();
-        sc.nextLine();
-        for(Usuario u : usuarios){
-            if(u.getNome().equals(confirmNome) && u.getSenha() == confirmSenha){
-                System.out.println("\nObrigado por comprar na loja XPTO!");
-                return;
-            }
-        }
-        System.out.println("\nUsuário ou senha incorretos.");
-    }
 
     //aqui é o metodo para fazer a validação de usuarios
     public static boolean usuarioJaExiste(String nome){
