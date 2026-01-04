@@ -34,7 +34,7 @@ public class Usuario implements UsuarioAutenticavel{
     }
     public static boolean cadastrarUsuario(String nome, int senha){
         //vamos verificar se já existe um usuario com o nome que voce esta tentando usar
-        if (usuarioJaExiste(nome)){
+        if (nomeJaExiste(nome)){
             System.out.println("Usuário já existe!");
             return false;
         }
@@ -43,15 +43,25 @@ public class Usuario implements UsuarioAutenticavel{
         return true;
     }
 
-
+    public static boolean confirmarUsuario(String confirmNome, int confirmSenha ){
+        for(Usuario u : usuarios){
+            if(u.autenticar(confirmNome, confirmSenha)){
+                return true;
+            }
+        }
+        return false;
+    }
     //aqui é o metodo para fazer a validação de usuarios
-    public static boolean usuarioJaExiste(String nome){
-        for (Usuario u : usuarios){
-            if (u.getNome().equalsIgnoreCase(nome)){
+    public static boolean nomeJaExiste(String nome) {
+        for (Usuario u : usuarios) {
+            if (u.nome.equalsIgnoreCase(nome)) {
                 return true;
             }
         }
         return false;
     }
 
+    public boolean autenticar(String nome, int senha){
+        return this.nome.equalsIgnoreCase(nome) && this.senha == senha;
+    }
 }

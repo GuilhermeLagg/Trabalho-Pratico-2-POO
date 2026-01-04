@@ -37,4 +37,10 @@ public abstract class Produto {
 
     public abstract double precoTotal();
 
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Nome: " + nome + " | Preço: " + preco + " | Quantidade: " + quantidadeProduto;
+    }
+
+
 }

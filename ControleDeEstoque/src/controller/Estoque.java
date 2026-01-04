@@ -1,6 +1,8 @@
 package controller;
 
 import model.*;
+
+import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +11,8 @@ import java.util.Scanner;
 public class Estoque {
     //Vamos criar uma lista de produtos em estoque (produtos esses que não vao mudar. São os produtos disponíveis pra compra).
     //essa lista tem que ser iniciada carregando o nosso estoque está no arquivo estoque.txt;
-    private static List<Produto> produtos = GerenciadorArquivos.carregarEstoque();
 
+   private static List<Produto> produtos = GerenciadorArquivos.carregarEstoque();
     //Essa outra lista é o nosso carrinho. Vamos add os produtos ao carrinho pra que possamos comprá-los.
     private static List<ItemCarrinho> carrinho = new ArrayList<>();
     private static Scanner sc = new Scanner(System.in);
@@ -18,11 +20,10 @@ public class Estoque {
 
     //Variável responsável por armazenar o valor total dos produtos no carrinho (N sei se seria a melhor forma de fazer isso)
     private static double totalCarrinho;
-
     public static String visualizarEstoque(){
         StringBuilder sb = new StringBuilder();
         if (produtos.isEmpty()){
-           sb.append("Estoque vazio ou arquivo não encontrado");
+            sb.append("Estoque vazio ou arquivo não encontrado");
 
         }
         else {
@@ -38,102 +39,78 @@ public class Estoque {
     }
 
     //metodo para adicionar os produtos no carrinho através do id
-    public static void adicionarAoCarrinho() {
-        System.out.println("Qual produto deseja adicionar? Informe o id:");
-        for (Produto p : produtos){
-            System.out.println("ID: " +p.getId() + " | Produto: " + p.getNome());
-        }
-
-        System.out.print("--> ");
-        int id = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Qual a quantidade? ");
-        int qtde = sc.nextInt();
-        sc.nextLine();
-        //agora precisamos tratar a exceção personalizada: estoque insuficiente
-        try{
+    public static String adicionarAoCarrinho(int id, int qtde) {
+        try {
             Produto produtoEstoque = null;
-            for (Produto p: produtos){
-                if (p.getId() == id){
+            for (Produto p : produtos) {
+                if (p.getId() == id) {
                     produtoEstoque = p;
                     break;
-                    //aq estamos adicionando o produto q o usuario digitou na variavel de Produto produtoEstoque.
                 }
             }
 
-            if (produtoEstoque == null){
-                //se n tivermos adicionado nada ent significa que nao encontramos esse produto no estoque
-                System.out.println("Produto não encontrado!");
-                return;
+            if (produtoEstoque == null) {
+                return "Produto não encontrado!";
             }
 
-            //agora a gnt precisa ver quanto desse produto já tem no nosso carrinho
             int qtdeNoCarrinho = 0;
             ItemCarrinho itemExistente = null;
-            for (ItemCarrinho item : carrinho){
-                if (item.getProduto().getId() == id){
-                    //vamos guardar a qtde q temos no carrinho de determinado item
+            for (ItemCarrinho item : carrinho) {
+                if (item.getProduto().getId() == id) {
                     qtdeNoCarrinho = item.getQuantidadeCarrinho();
                     itemExistente = item;
                     break;
                 }
             }
 
-            //a soma (novo + atual) ultrapassa o estoque?
             if ((qtdeNoCarrinho + qtde) > produtoEstoque.getQuantidadeProduto()) {
-                //se essa qtde ultrapassar ai vamos lançar nossa excecao personalizada
-                throw new EstoqueInsuficienteException("Estoque insuficiente! Você já tem " + qtdeNoCarrinho + " no carrinho e o estoque total é " + produtoEstoque.getQuantidadeProduto());
+                throw new EstoqueInsuficienteException(
+                        "Estoque insuficiente! Você já tem " + qtdeNoCarrinho +
+                                " no carrinho e o estoque total é " + produtoEstoque.getQuantidadeProduto()
+                );
             }
 
-            //se foi validado e está ok, ent fazemos:
-            if (itemExistente != null){
+            if (itemExistente != null) {
                 itemExistente.adicionarProduto(qtde);
             } else {
                 carrinho.add(new ItemCarrinho(produtoEstoque, qtde));
             }
 
-            //e agora, por fim, vamos atualizar o preco total no carrinho
             totalCarrinho += produtoEstoque.getPreco() * qtde;
-            System.out.println("\n" + qtde + " unidades de " + produtoEstoque.getNome() + " adicionados ao carrinho!");
-
-        } catch (EstoqueInsuficienteException e){
-            System.out.println("Erro no pedido! " + e.getMessage());
+            return qtde + " unidades de " + produtoEstoque.getNome() + " adicionadas ao carrinho!";
+        } catch (EstoqueInsuficienteException e) {
+            return "Erro no pedido! " + e.getMessage();
         }
-
     }
 
-    public static void removerDoCarrinho(){
-        System.out.println("Qual produto deseja remover do carrinho? Informe o id:");
-        for (ItemCarrinho item : carrinho){
-            System.out.println("ID: " + item.getProduto().getId() + " | Produto: " + item.getProduto().getNome() + " | Quantidade: " + item.getQuantidadeCarrinho());
-        }
-        System.out.print("--> ");
-        int id = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Quantas unidades? ");
-        int qtde = sc.nextInt();
-
-        //Lógica para remoção dos objetos do carrinho, primeiro if retirando o produto por completo, o segundo certa quantidade e por fim não removendo por não possuir tal quantidade desejada
-        for(ItemCarrinho item : carrinho){
-            if(item.getProduto().getId() == id){
-                if(item.getQuantidadeCarrinho()==qtde){
-                    carrinho.remove(item);
-                    totalCarrinho -= item.produtoValorCarrinho();
-                    System.out.println("Produto removido com sucesso");
-                }else if(item.getQuantidadeCarrinho()>qtde){
-                    item.setQuantidadeCarrinho(item.getQuantidadeCarrinho()-qtde);
-                    totalCarrinho -= item.getProduto().getPreco()*qtde;
-                    System.out.println("Quantidade removida com sucesso");
-                }else{
-                    System.out.println("Você não possui essa quantidade no carrinho.");
-                }
+    public static String removerDoCarrinho(int id, int qtde) {
+        // procurar item no carrinho
+        ItemCarrinho itemCarrinho = null;
+        for (ItemCarrinho item : carrinho) {
+            if (item.getProduto().getId() == id) {
+                itemCarrinho = item;
                 break;
             }
         }
-    }
 
+        // se não encontrou
+        if (itemCarrinho == null) {
+            return "Produto não encontrado no carrinho";
+        }
+
+        // lógica de remoção
+        if (itemCarrinho.getQuantidadeCarrinho() == qtde) {
+            carrinho.remove(itemCarrinho);
+            totalCarrinho -= itemCarrinho.produtoValorCarrinho();
+            return "Produto removido com sucesso";
+        } else if (itemCarrinho.getQuantidadeCarrinho() > qtde) {
+            itemCarrinho.setQuantidadeCarrinho(itemCarrinho.getQuantidadeCarrinho() - qtde);
+            totalCarrinho -= itemCarrinho.getProduto().getPreco() * qtde;
+            return "Quantidade removida com sucesso";
+        } else {
+            return "Você não possui essa quantidade no carrinho.";
+        }
+    }
 
     public static String imprimeCarrinho() {
         StringBuilder sb = new StringBuilder();
@@ -160,57 +137,42 @@ public class Estoque {
     }
 
 
-    public static void pesquisarProduto(){
-        System.out.println("Informe o ID do produto desejado:");
-        int id = sc.nextInt();
-        boolean encontrado = false;
-        for (Produto  p : produtos){
-            if (p.getId() == id){
-                System.out.println("==================================================");
-                System.out.println("       Informações do produto desejado:");
-                System.out.println("Produto: " + p.getNome() + " | Quantidade: " + p.getQuantidadeProduto() + " | ID: " + p.getId());
-                System.out.println("==================================================");
-                encontrado = true;
-                break;
+    public static String pesquisarProduto(int id) {
+        for (Produto p : produtos) {
+            if (p.getId() == id) {
+                return "Produto encontrado:\n" +
+                        "Nome: " + p.getNome() +
+                        " | Quantidade: " + p.getQuantidadeProduto() +
+                        " | ID: " + p.getId();
             }
         }
-        if (!encontrado ){
-            System.out.println("=========================================");
-            System.out.println("Produto com ID " + id + " não localizado.");
-            System.out.println("=========================================");
-        }
+        return "Produto com ID " + id + " não localizado.";
     }
 
-    public static void finalizarCompra(){
 
-        System.out.println("Finalizando Compra...\n");
+    public static String finalizarCompra(String nome, int senha) {
         if (carrinhoVazio()) {
-            System.out.println("Seu carrinho está vazio!");
-            return;
+            return "Seu carrinho está vazio!";
         }
 
-        System.out.println("Valor total do seu carrinho: " + totalCarrinho);
+        // autenticação
+        if (!Usuario.confirmarUsuario(nome,senha)) {
+            return "Usuário ou senha incorretos. Compra não autorizada.";
+        }
 
-
-        //agora nós temos que TIRAR do estoque o que o usuario comprou, pra que ele possa ficar atualizado
-        for (ItemCarrinho item : carrinho){
+        // atualizar estoque
+        for (ItemCarrinho item : carrinho) {
             Produto p = item.getProduto();
-            //vamos SUBTRAIR o que temos no estoque pelo que compramos e que está no nosso carrinho
-            //ai usamos um setter pra poder atualizar a qtde no estoque
             p.setQuantidadeProduto(p.getQuantidadeProduto() - item.getQuantidadeCarrinho());
         }
 
-       //a atualização foi feita só no estoque "fisico", mas precisamos fazer no "virtual". Ou seja, atualizar no arquivo tbm
-       GerenciadorArquivos.salvarEstoque(produtos); //aq ele vai REESCREVER o arquivo, mas agora com os produtos atualizados!
-
-        //agora vamos gerar nosso recibo ao final da compra
+        GerenciadorArquivos.salvarEstoque(produtos);
         GerenciadorArquivos.gerarRelatorioCompra(carrinho, totalCarrinho);
 
-        //vamos limpar o carrinho pra prox compra
-        carrinho.clear(); //esse clear() limpa a lista - "reseta"
-        totalCarrinho = 0; //precisamos tbm resetar o valor que estava no carrinho
+        carrinho.clear();
+        totalCarrinho = 0;
 
-        System.out.println("\nCompra finalizada!");
+        return "Compra finalizada com sucesso!\nRecibo gerado em relatorio_compra.txt";
     }
 
     public static boolean carrinhoVazio(){
@@ -220,6 +182,9 @@ public class Estoque {
         return false;
     }
 
+    public boolean confirmaUsuario(String confirmNome, int confirmSenha) {
+        return Usuario.confirmarUsuario(confirmNome, confirmSenha);
+    }
     public boolean realizarCadastro(String nome, int senha) {
         return Usuario.cadastrarUsuario(nome, senha);
     }

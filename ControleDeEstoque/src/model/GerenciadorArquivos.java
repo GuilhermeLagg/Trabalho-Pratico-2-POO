@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciadorArquivos {
-    private static final String NOME_ARQUIVO = "estoque.txt";
+    private static final String NOME_ARQUIVO = "ControleDeEstoque/out/production/ControleDeEstoque/estoque.txt";
 
     //metodo que vai salvar a lista de produtos no arquivo
     public static void salvarEstoque(List<Produto> produtos){
@@ -22,7 +22,7 @@ public class GerenciadorArquivos {
                     linha = "IMPORTADO;" + p.getNome() + ";" +p.getPreco() + ";" + p.getQuantidadeProduto() + ";" + imp.getTaxaImportacao();
                     //se ele for importado essa eh a linha que ele tem que pegar
                 } else {
-                    linha = "COMUM" + p.getNome() + ";" +p.getPreco() + ";" + p.getQuantidadeProduto();
+                    linha = "COMUM;" + p.getNome() + ";" +p.getPreco() + ";" + p.getQuantidadeProduto();
                     //se ele for comum essa eh a linha que ele tem que pegar
                 }
                 bw.write(linha); //vamos escrever no arquivo
