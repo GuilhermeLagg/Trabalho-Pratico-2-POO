@@ -206,14 +206,6 @@ public class TelaMenu extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, resultado);
                         String recibo = Estoque.visualizarEstoque();
 
-                        JOptionPane.showMessageDialog(
-                                TelaMenu.this,
-                                recibo,
-                                "Itens no estoque",
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
-                    });
-
                     }
                         catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(TelaMenu.this, "Senha deve ser numérica!");
